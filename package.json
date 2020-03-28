@@ -1,0 +1,25 @@
+{
+  "name": "purchasing",
+  "version": "1.0.0",
+  "description": "purchasing",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js", 
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "aladdinealcala",
+  "license": "ISC",
+  "dependencies": {
+    "authentication": "0.0.4",
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.22.0",
+    "morgan": "^1.10.0",
+    "mysql2": "^2.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
