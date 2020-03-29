@@ -67,5 +67,21 @@ module.exports = {
    .catch(error => {
     console.log(error);
    });
- } //end of create function
+ }, //end of create function
+ removematerial: (id, callBack) => {
+  connection
+   .then(db =>
+    //console.log(connection);
+    db.execute(`delete from material where matid=?`, [id], (error, results) => {
+     if (error) {
+      return callBack(error);
+     }
+     db.release();
+     return callBack(null, results);
+    })
+   )
+   .catch(error => {
+    console.log(error);
+   });
+ }
 };

@@ -2,7 +2,8 @@
 const {
  create,
  getmaterials,
- getmaterialbyid
+ getmaterialbyid,
+ removematerial
 } = require("./material.services");
 
 let router = require("express").Router();
@@ -33,11 +34,12 @@ router.route("/").get((req, res) => {
  });
 });
 
-//api/materials/id
+//api/material/id
 //get all material
 
 router.route("/:id").get((req, res) => {
- getmaterials(body, function(error, results) {
+ const id = req.params.id;
+ getmaterialbyid(id, function(error, results) {
   if (error) {
    console.log(error);
    res.status(500).json({
@@ -59,6 +61,26 @@ router.route("/").post((req, res) => {
  const body = req.body;
 
  create(body, function(error, results) {
+  if (error) {
+   console.log(error);
+   res.status(500).json({
+    success: 0,
+    message: error
+   });
+  }
+  //console.log("from router ");
+  res.status(200).json({
+   success: 1,
+   data: results
+  });
+ });
+});
+
+//api/material/id
+//remove material
+router.route("/:id").delete((req, res) => {
+ const id = req.params.id;
+ removematerial(id, function(error, results) {
   if (error) {
    console.log(error);
    res.status(500).json({
