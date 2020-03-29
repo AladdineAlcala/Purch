@@ -1,4 +1,4 @@
-var databaseconfig = {
+const databaseconfig = {
  host: "localhost",
  database: "purchase",
  user: "root",

@@ -1,7 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
 const bodyparser = require("body-parser");
-const _materials = require("./routes/material");
+const _materials = require("./api/material/material.router");
 
 const app = express();
 
