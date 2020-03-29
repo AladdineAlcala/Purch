@@ -1,66 +1,71 @@
 const db = require("../../config/connect");
 
-var connection;
-
 async function get_connection() {
  return await db.getConnection();
 }
 
+const connection = get_connection();
+
 module.exports = {
- create: function(data, callback) {
-  insertmaterial(data, function(error, result) {
-   //console.log(result);
-   //console.log(error);
+ getmaterials: callBack => {
+  connection
+   .then(db =>
+    //console.log(connection);
+    db.execute(
+     `select matid,matdesc,unit from material`,
+     [],
+     (error, results) => {
+      if (error) {
+       return callBack(error);
+      }
+      db.release();
+      return callBack(null, results);
+     }
+    )
+   )
+   .catch(error => {
+    console.log(error);
+   });
+ },
+ getmaterialbyid: (id, callBack) => {
+  connection
+   .then(db =>
+    //console.log(connection);
+    db.execute(
+     `select matid,matdesc,unit from material where matid=?`,
+     [id],
+     (error, results) => {
+      if (error) {
+       return callBack(error);
+      }
+      db.release();
+      return callBack(null, results);
+     }
+    )
+   )
+   .catch(error => {
+    console.log(error);
+   });
+ },
 
-   return callback(error, result);
-  });
-
-  //return callback(_error, _result);
-  //console.log("return from insert function");
+ create: (data, callBack) => {
+  connection
+   .then(db =>
+    //console.log(connection);
+    db.execute(
+     `insert into material(matdesc,unit) values (?,?)`,
+     [data.matdesc, data.unit],
+     (error, results) => {
+      if (error) {
+       return callBack(error);
+      }
+      db.release();
+      return callBack(null, results);
+     }
+    )
+   )
+   .catch(error => {
+    console.log(error);
+   });
  } //end of create function
 };
-
-function insertmaterial(data, callback) {
- const connection = get_connection();
- connection
-  .then(db =>
-   //console.log(connection);
-   db.execute(
-    `insert into material(matdesc,unit) values (?,?)`,
-    [data.matdesc, data.unit],
-    (err, result) => {
-     if (err) {
-      return callback(err);
-     }
-     //console.log(result);
-     return callback(null, result);
-    }
-   )
-  )
-  .catch(err => {
-   console.log(err);
-  });
-}
-
-/*  connection
-  .then(db =>
-   db.execute(
-    `insert into material(matdesc,unit) values (?,?)`,
-    [data.matdesc, data.unit],
-    (err, result) => {
-     if (err) {
-      //console.log("from services err");
-      //db.release();
-      return callback(err);
-     }
-     //db.release();
-     //console.log(result);
-     _result = result;
-     //return callback(null, result);
-    }
-   )
-  )
-  .catch(err => {
-   console.log(err);
-   return callback(err);
-  }); */
