@@ -10,6 +10,7 @@ module.exports = {
  createuser: (data, callBack) => {
   //console.log(data.password);
   let pwhash = bcryt.hashSync(data.password, bcryt.genSaltSync(10));
+
   //console.log(pwhash);
   connection
    .then(conn =>
@@ -28,7 +29,33 @@ module.exports = {
    .catch(error => {
     return callBack(error);
    });
- } /* , // end createuser object
+ }, // end createuser object
+ getuserbyemail: (data, callBack) => {
+  const loguser = {
+   email: data.email,
+   password: data.password
+  };
+
+  // find user from database
+  connection
+   .then(conn =>
+    conn.execute(
+     `Select * from users where email=?`,
+     [loguser.email],
+     (err, res, fields) => {
+      if (err) {
+       throw err;
+      }
+      return callBack(null, res[0]);
+     }
+    )
+   )
+   .catch(error => {
+    return callBack(error);
+   });
+ }
+
+ /* 
  getUsers: callBack => {
   connection
    .then(conn => conn.execute(``, [], (error, results) => {}))
@@ -37,3 +64,13 @@ module.exports = {
    });
  } */
 };
+
+/* function hashPassword(datapass,callBack){
+      const saltRounds=10;
+      bcrypt.hash(datapass, saltRounds, function(err, hash) {
+         if(err){
+           return callBack(err)
+         }
+            return callBack(hash);
+      });
+} */

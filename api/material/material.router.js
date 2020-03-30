@@ -20,13 +20,13 @@ mat_router.route("/").get((req, res) => {
  getmaterials(function(error, results) {
   if (error) {
    console.log(error);
-   res.status(500).json({
+   return res.status(500).json({
     success: 0,
     message: error
    });
   }
   //console.log("from router ");
-  res.status(200).json({
+  return res.status(200).json({
    success: 1,
    data: results
   });
@@ -41,13 +41,13 @@ mat_router.route("/:id").get((req, res) => {
  getmaterialbyid(id, function(error, results) {
   if (error) {
    console.log(error);
-   res.status(500).json({
+   return res.status(500).json({
     success: 0,
     message: error
    });
   }
   //console.log("from router ");
-  res.status(200).json({
+  return res.status(200).json({
    success: 1,
    data: results
   });
