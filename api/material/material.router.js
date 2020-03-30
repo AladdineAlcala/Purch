@@ -1,4 +1,3 @@
-//const db = require("../../config/connect");
 const {
  create,
  getmaterials,
@@ -6,10 +5,10 @@ const {
  removematerial
 } = require("./material.services");
 
-let router = require("express").Router();
+let mat_router = require("express").Router();
 
 // a middleware function with no mount path. This code is executed for every request to the router
-router.use(function(req, res, next) {
+mat_router.use(function(req, res, next) {
  console.log("Users @Time:", Date.now());
  next();
 });
@@ -17,7 +16,7 @@ router.use(function(req, res, next) {
 //api/materials
 //get all material
 
-router.route("/").get((req, res) => {
+mat_router.route("/").get((req, res) => {
  getmaterials(function(error, results) {
   if (error) {
    console.log(error);
@@ -37,7 +36,7 @@ router.route("/").get((req, res) => {
 //api/material/id
 //get all material
 
-router.route("/:id").get((req, res) => {
+mat_router.route("/:id").get((req, res) => {
  const id = req.params.id;
  getmaterialbyid(id, function(error, results) {
   if (error) {
@@ -57,7 +56,7 @@ router.route("/:id").get((req, res) => {
 
 //api/materials
 //post new material
-router.route("/").post((req, res) => {
+mat_router.route("/").post((req, res) => {
  const body = req.body;
 
  create(body, function(error, results) {
@@ -78,7 +77,7 @@ router.route("/").post((req, res) => {
 
 //api/material/id
 //remove material
-router.route("/:id").delete((req, res) => {
+mat_router.route("/:id").delete((req, res) => {
  const id = req.params.id;
  removematerial(id, function(error, results) {
   if (error) {
@@ -96,4 +95,4 @@ router.route("/:id").delete((req, res) => {
  });
 });
 
-module.exports = router;
+module.exports = mat_router;

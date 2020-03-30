@@ -2,10 +2,15 @@ const express = require("express");
 const logger = require("morgan");
 const bodyparser = require("body-parser");
 const _materials = require("./api/material/material.router");
+const _users = require("./api/user/user.router");
+const dotenv = require("dotenv");
 
+dotenv.config();
+//const { port } = require("./config/database");
 const app = express();
 
-const port = process.env.PORT || 4000;
+const port = process.env.APP_PORT || 4000;
+
 app.use(logger("dev"));
 app.use(bodyparser.json());
 //To parse result in json format
@@ -30,8 +35,9 @@ app.use(function(req, res, next) {
 
 //wrappingfunctions();
 
-//endpoint that start with users
+//endpoint that start with
 app.use("/api/materials", _materials);
+app.use("/api/users", _users);
 
 app.listen(port, function(err, res) {
  console.log(` app running on port ${port}`);
