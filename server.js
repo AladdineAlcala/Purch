@@ -1,5 +1,6 @@
 const express = require("express");
 const logger = require("morgan");
+const passport = require("passport");
 const bodyparser = require("body-parser");
 const _materials = require("./api/material/material.router");
 const _users = require("./api/user/user.router");
@@ -27,13 +28,11 @@ app.use(function(req, res, next) {
  next();
 });
 
-/* const wrappingconnection = async () => {
- const connection = await db.getConnection();
- //console.log(connection);
- return connection;
-}; */
+//passport middleware
+app.use(passport.initialize());
 
-//wrappingfunctions();
+//passport config
+require("./auth/passport")(passport);
 
 //endpoint that start with
 app.use("/api/materials", _materials);

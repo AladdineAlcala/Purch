@@ -18,7 +18,7 @@ module.exports = {
       if (error) {
        return callBack(error);
       }
-      db.release();
+      //db.release();
       return callBack(null, results);
      }
     )

@@ -35,7 +35,6 @@ module.exports = {
    email: data.email,
    password: data.password
   };
-
   // find user from database
   connection
    .then(conn =>
@@ -44,7 +43,7 @@ module.exports = {
      [loguser.email],
      (err, res, fields) => {
       if (err) {
-       throw err;
+       return callBack(err);
       }
       return callBack(null, res[0]);
      }
@@ -53,8 +52,27 @@ module.exports = {
    .catch(error => {
     return callBack(error);
    });
+ },
+ getuserbyid: (id, callBack) => {
+  const userid = id;
+  connection
+   .then(conn =>
+    conn.execute(
+     `Select id,name,email from users where id=?`,
+     [userid],
+     (err, res, fields) => {
+      if (err) {
+       return callBack(err);
+      }
+      //console.log(res[0]);
+      return callBack(null, res[0]);
+     }
+    )
+   )
+   .catch(err => {
+    return callBack(error);
+   });
  }
-
  /* 
  getUsers: callBack => {
   connection
@@ -64,13 +82,3 @@ module.exports = {
    });
  } */
 };
-
-/* function hashPassword(datapass,callBack){
-      const saltRounds=10;
-      bcrypt.hash(datapass, saltRounds, function(err, hash) {
-         if(err){
-           return callBack(err)
-         }
-            return callBack(hash);
-      });
-} */
