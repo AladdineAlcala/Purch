@@ -21,11 +21,12 @@ module.exports = passport => {
    const userid = jwt_payload.id;
    getuserbyid(userid, (err, result) => {
     if (err) {
-     console.log(err);
+     return done(null, false);
     }
-    if (result) {
-     return done(null, result);
+    if (!result) {
+     return done(null, false);
     }
+    return done(null, result);
    });
   })
  );
