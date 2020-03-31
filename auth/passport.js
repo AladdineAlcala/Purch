@@ -23,7 +23,9 @@ module.exports = passport => {
     if (err) {
      console.log(err);
     }
-    console.log(result);
+    if (result) {
+     return done(null, result);
+    }
    });
   })
  );
