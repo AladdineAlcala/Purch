@@ -1,10 +1,15 @@
 const validator = require("validator");
 const chk = require("./checkempty");
 
-module.exports = function validatelogin(data) {
+module.exports = function validateuserregistration(data) {
  let error = {};
+
+ if (validator.isEmpty(data.name, { ignore_whitespace: false })) {
+  error.name = "Cannot accept empty string";
+ }
+
  if (validator.isEmpty(data.email, { ignore_whitespace: false })) {
-  error.username = "Name must be more than 3 characters";
+  error.email = "Cannot accept empty string";
  } else if (
   !validator.isEmail(data.email, {
    allow_display_name: false,
@@ -15,12 +20,14 @@ module.exports = function validatelogin(data) {
    domain_specific_validation: false
   })
  ) {
-  error.username = "Invalid email format";
+  error.email - "Invalid email format";
  }
 
  if (validator.isEmpty(data.password, { ignore_whitespace: false })) {
-  error.password = "Password is required";
+  error.password = "Cannot accept empty string";
  }
+
+ console.log(error);
 
  return {
   error,

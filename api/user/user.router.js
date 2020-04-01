@@ -5,6 +5,7 @@ let userrouter = require("express").Router();
 const saltRounds = 10;
 const keys = process.env.SECRET;
 const validatelogin = require("../../validation/loginvalidation");
+const validateuserregistration = require("../../validation/registrationvalidation");
 
 // a middleware function with no mount path. This code is executed for every request to the router
 userrouter.use(function(req, res, next) {
@@ -17,19 +18,28 @@ userrouter.use(function(req, res, next) {
 //@access -> public
 userrouter.route("/").post((req, res) => {
  const body = req.body;
- createuser(body, function(error, results) {
-  if (error) {
-   res.status(500).json({
-    success: 0,
-    message: error
-   });
-  }
-  //console.log(result);
-  return res.status(200).json({
-   success: 1,
-   data: results
+ const { error, isvalid } = validateuserregistration(body);
+
+ if (!isvalid) {
+  res.status(500).json({
+   success: 0,
+   message: error
   });
- });
+ } else {
+  createuser(body, function(error, results) {
+   if (error) {
+    res.status(500).json({
+     success: 0,
+     message: error
+    });
+   }
+   //console.log(result);
+   return res.status(200).json({
+    success: 1,
+    data: results
+   });
+  });
+ }
 });
 
 userrouter.route("/login").post((req, res) => {

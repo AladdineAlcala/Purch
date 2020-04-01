@@ -1,4 +1,4 @@
-const isempty = function(value) {
+const is_empty = function(value) {
  return (
   value === undefined ||
   value === null ||
@@ -7,4 +7,4 @@ const isempty = function(value) {
  );
 };
 
-module.exports = isempty;
+module.exports.is_empty = is_empty;
