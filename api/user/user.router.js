@@ -26,6 +26,7 @@ userrouter.route("/").post((req, res) => {
    message: error
   });
  } else {
+  // user inputs validate true
   createuser(body, function(error, results) {
    if (error) {
     res.status(500).json({
@@ -38,7 +39,7 @@ userrouter.route("/").post((req, res) => {
     success: 1,
     data: results
    });
-  });
+  }); // end create
  }
 });
 
@@ -51,7 +52,7 @@ userrouter.route("/login").post((req, res) => {
    message: error
   });
  } else {
-  getuserbyemail(body, (error, result) => {
+  getuserbyemail(body.email, (error, result) => {
    if (error) {
     res.status(500).json({
      success: 0,

@@ -1,10 +1,12 @@
 const db = require("../../config/connect");
 const bcryt = require("bcrypt");
 
-async function get_Connection() {
+/* async function get_Connection() {
  return await db.getConnection();
 }
-const connection = get_Connection();
+const connection = get_Connection(); */
+
+const connection = async () => await db.getConnection();
 
 module.exports = {
  createuser: (data, callBack) => {
@@ -31,16 +33,16 @@ module.exports = {
    });
  }, // end createuser object
  getuserbyemail: (data, callBack) => {
-  const loguser = {
+  /* const loguser = {
    email: data.email,
    password: data.password
-  };
+  }; */
   // find user from database
   connection
    .then(conn =>
     conn.execute(
      `Select * from users where email=?`,
-     [loguser.email],
+     [data.email],
      (err, res, fields) => {
       if (err) {
        return callBack(err);
