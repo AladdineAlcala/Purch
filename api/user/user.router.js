@@ -18,7 +18,10 @@ userrouter.use(function(req, res, next) {
 //@access -> public
 userrouter.route("/").post((req, res) => {
  const body = req.body;
- const { error, isvalid } = validateuserregistration(body);
+ console.log(body);
+ const { error, isvalid } = validateuserregistration(body); //distructoring
+
+ console.log(isvalid);
 
  if (!isvalid) {
   res.status(500).json({
@@ -26,26 +29,43 @@ userrouter.route("/").post((req, res) => {
    message: error
   });
  } else {
-  // user inputs validate true
-  createuser(body, function(error, results) {
-   if (error) {
+  let email = body.email;
+  getuserbyemail(email, (err, result) => {
+   console.log(result);
+   if (result != null && Object.keys(result).length != 0) {
+    error.email = "Email already registered";
     res.status(500).json({
      success: 0,
      message: error
     });
+   } else {
+    // user inputs validate true
+
+    createuser(body, function(err, results) {
+     if (err) {
+      res.status(500).json({
+       success: 0,
+       message: error
+      });
+     }
+     //console.log(result);
+     res.status(200).json({
+      success: 1,
+      data: results
+     });
+    }); // end create
    }
-   //console.log(result);
-   return res.status(200).json({
-    success: 1,
-    data: results
-   });
-  }); // end create
+  });
  }
 });
 
+//@route  -> api/users/login
+//@desc -> login user
+//@access -> public
 userrouter.route("/login").post((req, res) => {
  const body = req.body;
  const { error, isvalid } = validatelogin(body);
+
  if (!isvalid) {
   res.status(500).json({
    success: 0,
@@ -56,11 +76,11 @@ userrouter.route("/login").post((req, res) => {
    if (error) {
     res.status(500).json({
      success: 0,
-     message: error
+     message: error_code
     });
    }
    if (!result) {
-    return res.status(400).json({ password: "email or password is incorrect" });
+    return res.status(400).json({ password: "email or incorrect" });
    }
    //console.log(result.password);
    bcrypt.compare(body.password, result.password).then(isMatch => {

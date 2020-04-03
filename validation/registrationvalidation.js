@@ -1,15 +1,16 @@
-const db = require("../config/connect");
 const validator = require("validator");
 const chk = require("./checkempty");
-const { getuserbyemail } = require("../api/user/user.services");
-
+const chkvalemailexist = require("./checkreg_email_exist");
+let error = {};
 //const connection = async () => await db.getConnection();
 
 module.exports = function validateuserregistration(data) {
- let error = {};
+ data.name = !chk.is_empty(data.name) ? data.name : "";
+ data.email = !chk.is_empty(data.email) ? data.email : "";
+ data.password = !chk.is_empty(data.password) ? data.password : "";
 
  if (validator.isEmpty(data.name, { ignore_whitespace: false })) {
-  error.name = "Cannot accept empty string";
+  error.name = "Cannot accept empty name";
  } else {
   if (!validator.isLength(data.name, { min: 3, max: 30 })) {
    error.name = "Name must be min of 3 characters";
@@ -29,22 +30,12 @@ module.exports = function validateuserregistration(data) {
     domain_specific_validation: false
    })
   ) {
-   error.username = "Invalid email format";
-  } else {
-   //check email if exist in database
-   etuserbyemail(body.email, (error, result) => {
-    if (error) {
-     error.email = "Email address already registered";
-    }
-    if (result) {
-     error.email = "Email address already registered";
-    }
-   });
+   error.email = "Invalid email format";
   }
  }
 
  if (validator.isEmpty(data.password, { ignore_whitespace: false })) {
-  error.password = "Cannot accept empty string";
+  error.password = "Cannot accept empty password";
  }
 
  console.log(error);

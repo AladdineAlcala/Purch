@@ -1,14 +1,10 @@
 const db = require("../../config/connect");
 
-async function get_connection() {
- return await db.getConnection();
-}
-
-const connection = get_connection();
+const connection = async () => await db.getConnection();
 
 module.exports = {
  getmaterials: callBack => {
-  connection
+  connection()
    .then(db =>
     //console.log(connection);
     db.execute(
@@ -28,7 +24,7 @@ module.exports = {
    });
  },
  getmaterialbyid: (id, callBack) => {
-  connection
+  connection()
    .then(db =>
     //console.log(connection);
     db.execute(
@@ -49,7 +45,7 @@ module.exports = {
  },
 
  create: (data, callBack) => {
-  connection
+  connection()
    .then(db =>
     //console.log(connection);
     db.execute(
@@ -69,7 +65,7 @@ module.exports = {
    });
  }, //end of create function
  removematerial: (id, callBack) => {
-  connection
+  connection()
    .then(db =>
     //console.log(connection);
     db.execute(`delete from material where matid=?`, [id], (error, results) => {
