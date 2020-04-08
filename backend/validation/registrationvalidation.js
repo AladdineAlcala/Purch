@@ -1,8 +1,6 @@
 const validator = require("validator");
 const chk = require("./checkempty");
-const chkvalemailexist = require("./checkreg_email_exist");
 let error = {};
-//const connection = async () => await db.getConnection();
 
 module.exports = function validateuserregistration(data) {
  data.name = !chk.is_empty(data.name) ? data.name : "";
